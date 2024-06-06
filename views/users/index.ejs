@@ -54,8 +54,8 @@
                                             <th width="15%">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
+                                    <tbody id="data-laporan">
+                                        <!-- <tr>
                                             <th>#00098765</th>
                                             <td>
                                                 Hendra Setiawan<br>
@@ -67,44 +67,9 @@
                                                 <small>- Laporan Masuk (6-2-2024 11:45)</small>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-outline-primary btn-sm">Respon Laporan</button>
+                                                <a class="btn btn-outline-primary btn-sm" href="/laporan/respon/<%= user.tlp %>" onclick="respon_lap()">Respon Laporan</a>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <th>#00098765</th>
-                                            <td>
-                                                Hendra Setiawan<br>
-                                                0821111223<br>
-                                                jln. Mulawarman Rt.10 No.25
-                                            </td>
-                                            <td>Terjadi keributan antar warga Rt.10 dengan Rt.11, kronologi salah satu warga Rt.11 gak terima anaknya dislepet kepalanya oleh pelaku warga Rt.10, sekian terima kasih</td>
-                                            <td>
-                                                <small>- Laporan Masuk (6-2-2024 11:45)</small>
-                                                <br>
-                                                <small>- Respon Tim (6-2-2024 11:46)</small>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-outline-success btn-sm">Laporan Selesai</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>#00098765</th>
-                                            <td>
-                                                Hendra Setiawan<br>
-                                                0821111223<br>
-                                                jln. Mulawarman Rt.10 No.25
-                                            </td>
-                                            <td>Terjadi keributan antar warga Rt.10 dengan Rt.11, kronologi salah satu warga Rt.11 gak terima anaknya dislepet kepalanya oleh pelaku warga Rt.10, sekian terima kasih</td>
-                                            <td>
-                                                
-                                                <small>- Laporan Masuk (6-2-2024 11:45)</small>
-                                                <br>
-                                                <small>- Respon Tim (6-2-2024 11:46)</small>
-                                                <br>
-                                                <small>- Laporan Selesai (6-2-2024 15:30)</small>
-                                            </td>
-                                            <td></td>
-                                        </tr>
+                                        </tr> -->
                                     </tbody>
                                 </table>
                             </div>
@@ -127,6 +92,68 @@
                   console.error('Error:', error);
                 });
             }
+
+            async function respon_lap(event) {
+                
+                event.preventDefault();
+                                
+                try {
+                    let id = req.params.id;
+
+                    const response = await fetch('/laporan/respon', {
+                        method : 'POST',
+                        headers : {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({tlp})
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        alert(result.message);
+                        window.location.href = '/';
+                    } else {
+                        alert(result.message);
+                    }
+
+
+                } catch (error) {
+                    console.log(error);
+                }
+                
+            }
+
+
+            async function fetchLaporan() {
+                try {
+                    const response = await fetch('/laporan/all');
+                    const allLaporan = await response.json()
+                    const laporanTable = document.getElementById('data-laporan')
+                    for (let i = 0; i < allLaporan.length; i++) {
+                        const row = document.createElement('tr')
+                        row.innerHTML = `
+                            <th scope="row">${allLaporan[i].id}</th>
+                            <td>
+                                ${allLaporan[i].nama} <br>
+                                ${allLaporan[i].tlp} <br>
+                                ${allLaporan[i].alamat}
+                            </td>
+                            <td>${allLaporan[i].laporan}</td>
+                            <td>
+                                <small>- Laporan Masuk (6-2-2024 11:45)</small>
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-primary btn-sm" href="" onclick="respon_lap()">Respon Laporan</a>
+                            </td>
+                        `            
+                        laporanTable.appendChild(row)
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            fetchLaporan()
         </script>
         <!-- Bootstrap core JS-->
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

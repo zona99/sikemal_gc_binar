@@ -25,6 +25,10 @@ router.get('/profile/update', middleware.checkAuth, (req, res, next) => {
   res.render('users/update', { title: 'Sistem Informasi Keamanan dan Ketertiban Masyarakat Malinau',  user: req.user});
 });
 
+router.get('/create', (req, res) => {
+  res.render('users/create', { title: 'Sistem Informasi Keamanan dan Ketertiban Masyarakat Malinau' });
+});
+
 
 router.post('/login', userController.loginUser);
 router.get('/logout', userController.logoutUser);
@@ -33,5 +37,6 @@ router.get('/all', userController.getAllUser);
 router.get('/profile/:id', middleware.checkAuth, userController.getUser);
 router.patch('/update/:id', middleware.checkAuth, userController.updateUser);
 router.delete('/delete/:id', middleware.checkAuth, userController.deleteUser);
+router.post('/cekkode', userController.cekKode);
 
 module.exports = router;

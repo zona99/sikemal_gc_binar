@@ -57,26 +57,26 @@
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5 mt-3">
                         <div class="flex-grow-1 row">
                             <div class="col-md-12">
-                                <form>
+                                <form onsubmit="bikinLaporan(event)">
                                     <div class="form-group mb-3">
                                         <div class="col-md-4">
                                             <label>Nama</label>
-                                            <input type="text" class="form-control mb-2" placeholder="Nama">
+                                            <input type="text" id="nama" name="nama" class="form-control mb-2" placeholder="Nama" required>
                                         </div>
                                     </div>
                                     <div class="form-group mb-3">
                                         <div class="col-md-4">
                                             <label>No.Telp</label>
-                                            <input type="Number" class="form-control" placeholder="No.Telp">
+                                            <input type="Number" id="tlp" name="tlp" class="form-control" placeholder="No.Telp" required>
                                         </div>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>Alamat</label>
-                                        <input type="text" class="form-control" placeholder="Alamat">
+                                        <input type="text" id="alamat" name="alamat" class="form-control" placeholder="Alamat" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>Laporan</label>
-                                        <textarea class="form-control" rows="3" placeholder="Laporan"></textarea>
+                                        <textarea class="form-control" id="catatan" name="catatan" rows="3" placeholder="Laporan" required></textarea>
                                     </div>
                                     <div class="text-end">
                                         <button type="submit" class="btn btn-secondary">Kirim Laporan</button>
@@ -141,6 +141,42 @@
             </section>
             <hr class="m-0" />v
         </div>
+        <!-- REST API-->
+        <script>
+            async function bikinLaporan(event) {
+                
+                event.preventDefault();
+                const nama = document.getElementById('nama').value;
+                const tlp = document.getElementById('tlp').value;
+                const alamat = document.getElementById('alamat').value;
+                const laporan = document.getElementById('catatan').value;
+                
+                try {
+                    const response = await fetch('/laporan/create', {
+                        method : 'POST',
+                        headers : {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({nama, tlp, alamat, laporan})
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        alert(result.message);
+                        window.location.href = '/';
+                    } else {
+                        alert(result.message);
+                    }
+
+
+                } catch (error) {
+                    console.log(error);
+                }
+                
+            }
+
+        </script>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->

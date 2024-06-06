@@ -25,4 +25,12 @@ module.exports = class {
 
         next();
     };
+
+    // static checkSessionKode = async (req, res, next) => {
+    //     if (req.session.rahasiaId) {
+    //         next()
+    //     }else {
+    //         res.json({status: 400, message: 'Maaf anda tidak punya akses'})
+    //     }
+    // }
 }

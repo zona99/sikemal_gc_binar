@@ -11,7 +11,7 @@ module.exports = {
       host: '127.0.0.1',
       user: 'postgres',
       password: 'postgres',
-      database: 'gc_binar'
+      database: 'gold_binar'
     },
     migrations: {
       directory: './migrations'

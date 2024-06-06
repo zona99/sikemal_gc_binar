@@ -42,7 +42,7 @@
                         Sistem Informasi Keamanan dan Ketertiban Masyarakat Malinau
                     </div>
                     <div class="social-icons">
-                        <a class="btn btn-secondary btn-sm mb-3" href="#tambahpetugas">Tambah Petugas</a>
+                        <a class="btn btn-secondary btn-sm mb-3" href="#tambahpetugas">Tambah User</a>
                     </div>
                     <div class="">
                         <form class="mb-5" onsubmit="login(event)">
@@ -124,6 +124,31 @@
                 } catch (error) {
                     console.error('Error:', error);
                     alert('An error occurred. Please try again.');
+                }
+            }
+
+            async function rahasia(event) {
+                event.preventDefault();
+                const kode = document.getElementById('kode').value;
+                
+                try {
+                    const response = await fetch('/users/cekkode', {
+                        method : 'POST',
+                        headers : {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({kode})
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        window.location.href = '/users/create';
+                    } else {
+                        alert(result.message);
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
             }
         </script>

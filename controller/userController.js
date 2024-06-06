@@ -41,7 +41,7 @@ module.exports = class {
             const hashPassword = await bcrypt.hash(password, 10);
             const user = await knex('users').insert({ nama, email, password: hashPassword });
            
-            res.status(201).json({ message: 'Berhasil ditambahkan', user });
+            res.status(201).json({ status: 'success', message: 'Berhasil ditambahkan', user });
 
         } catch (error) {
             res.status(500).json({error: error.message})
@@ -111,5 +111,21 @@ module.exports = class {
       }
     };
     
-    
+    static cekKode = async (req, res) => {
+      try {
+          const {kode} = req.body;
+
+          const kodeRahasia = '$2b$10$Ozry6u4Pvh44VLYhUYkK7uYmaWYVXbN0.MjqQKUi3WjerB56uEWuW';
+
+              if (await bcrypt.compare(kode, kodeRahasia)){
+                  //req.session.rahasiaId = kodeRahasia;
+                  res.status(201).json({ status: 'success' });
+              } else {
+                  res.status(401).json({ status: 'error', message: 'Kode rahasia salah' });
+              }
+
+      } catch (error) {
+          res.status(500).json({error: error.message})
+      }
+    };
 };
